@@ -9,6 +9,9 @@ framework:
     #esi: true
     #fragments: true
 
+    # modifier la methode utilisée grace à un champs caché
+    http_method_override: true
+
 when@test:
     framework:
         test: true

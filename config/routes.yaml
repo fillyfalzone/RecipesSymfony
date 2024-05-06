@@ -3,3 +3,8 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+
+# création d'une route personnalisée sur url racine qui atteint la méthode index du HomeController
+# home:
+#     path: /
+#     controller: App\Controller\HomeController::index
