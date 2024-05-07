@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Recipe;
+use PhpParser\Node\Expr\Empty_;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Event\PostSubmitEvent;
@@ -14,19 +15,24 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-
+use Symfony\Component\Validator\Constraints\Length;
 
 class RecipeType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('title', TextType::class)
+            ->add('title', TextType::class, [
+                'empty_data' => '' //Valeur par defaut si rien n'est renseigné
+            ])
             ->add('slug', TextType::class, [
-                "required" => false
+                "required" => false,
+                'constraints' => new Length(min: 10 )
             ])
             ->add('duration', IntegerType::class)
-            ->add('content', TextareaType::class)
+            ->add('content', TextareaType::class, [
+                'empty_data' => ''
+            ])
             ->add('submit', SubmitType::class, [
                 "label" => "Modifier",
                 "attr" => [
@@ -70,6 +76,8 @@ class RecipeType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Recipe::class,
+            // Les groups de validation sont mises sur les attributs de la class Recipe
+            'validation_groups' => ['Default', 'Extra'],
         ]);
     }
 }
